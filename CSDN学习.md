@@ -1,52 +1,123 @@
 php算法和数据结构
-  2017/11/01 |  未分类 |songjian|  1 条评论 |  1818 views
-?php
-/**
-* Created by PhpStorm.
-* User: jinlei
-* Date: 17/11-1
-* Time: 上午9:12
-*/
-header(“content-type:text/html;charset=utf-8″);
-$arr = array(3,5,8,4,9,6,1,7,2);
-echo implode(” “,$arr).”
-“;
+
 //—————————————
 // 常用排序算法
 //—————————————
 //冒泡排序
 function BubbleSort($arr){
-$length = count($arr);
-if($length<=1){ return $arr; } for($i=0;$i<$length;$i++){ for($j=$length-1;$j>$i;$j–){
-if($arr[$j]<$arr[$j-1]){ $tmp = $arr[$j]; $arr[$j] = $arr[$j-1]; $arr[$j-1] = $tmp; } } } return $arr; } echo '冒泡排序：'; echo implode(' ',BubbleSort($arr))."
-“;
+    $length = count($arr);
+    if($length<=1){ return $arr; } 
+    for($i=0;$i<$length;$i++)
+    { 
+      for($j=$length-1;$j>$i;$j–)
+      {
+        if($arr[$j]<$arr[$j-1]){ 
+          $tmp = $arr[$j]; 
+          $arr[$j] = $arr[$j-1]; 
+          $arr[$j-1] = $tmp; 
+          } 
+        } 
+   } 
+     return $arr; 
+  } 
+  echo '冒泡排序：'; 
+  echo implode(' ',BubbleSort($arr))."“;
 
 //快速排序
 function QSort($arr){
-$length = count($arr);
-if($length <=1){ return $arr; } $pivot = $arr[0];//枢轴 $left_arr = array(); $right_arr = array(); for($i=1;$i<$length;$i++){//注意$i从1开始0是枢轴 if($arr[$i]<=$pivot){ $left_arr[] = $arr[$i]; }else{ $right_arr[] = $arr[$i]; } } $left_arr = QSort($left_arr);//递归排序左半部分 $right_arr = QSort($right_arr);//递归排序右半部份 return array_merge($left_arr,array($pivot),$right_arr);//合并左半部分、枢轴、右半部分 } echo "快速排序："; echo implode(' ',QSort($arr))."
-“;
+  $length = count($arr);
+  if($length <=1){ return $arr; } 
+  $pivot = $arr[0];//枢轴 
+  $left_arr = array(); 
+  $right_arr = array(); 
+  for($i=1;$i<$length;$i++)
+  { //注意$i从1开始0是枢轴 
+    if($arr[$i]<=$pivot){ $left_arr[] = $arr[$i]; }
+    else{ $right_arr[] = $arr[$i]; } 
+  } 
+  $left_arr = QSort($left_arr);
+  //递归排序左半部分 
+  $right_arr = QSort($right_arr);
+  //递归排序右半部份 
+  return array_merge($left_arr,array($pivot),$right_arr);
+  //合并左半部分、枢轴、右半部分 
+} 
+echo "快速排序："; 
+echo implode(' ',QSort($arr))."“;
 
 //选择排序(不稳定)
 function SelectSort($arr){
-$length = count($arr);
-if($length<=1){ return $arr; } for($i=0;$i<$length;$i++){ $min = $i; for($j=$i+1;$j<$length;$j++){ if($arr[$j]<$arr[$min]){ $min = $j; } } if($i != $min){ $tmp = $arr[$i]; $arr[$i] = $arr[$min]; $arr[$min] = $tmp; } } return $arr; } echo "选择排序："; echo implode(' ',SelectSort($arr))."
-“;
+  $length = count($arr);
+  if($length<=1){ return $arr; } 
+  for($i=0;$i<$length;$i++)
+  { 
+    $min = $i; 
+    for($j=$i+1;$j<$length;$j++)
+    { 
+      if($arr[$j]<$arr[$min]){ $min = $j; } 
+    } 
+    if($i != $min)
+    { 
+      $tmp = $arr[$i]; 
+      $arr[$i] = $arr[$min]; 
+      $arr[$min] = $tmp; 
+    } 
+  } 
+  return $arr; 
+} 
+echo "选择排序："; 
+echo implode(' ',SelectSort($arr))."“;
 
 //插入排序
 function InsertSort($arr){
-$length = count($arr);
-if($length <=1){ return $arr; } for($i=1;$i<$length;$i++){ $x = $arr[$i]; $j = $i-1; while($x<$arr[$j] && $j>=0){
-$arr[$j+1] = $arr[$j];
-$j–;
-}
-$arr[$j+1] = $x;
-}
-return $arr;
+  $length = count($arr);
+  if($length <=1){ return $arr; } 
+  for($i=1;$i<$length;$i++)
+  { 
+    $x = $arr[$i]; 
+    $j = $i-1; 
+    while($x<$arr[$j] && $j>=0){
+      $arr[$j+1] = $arr[$j];
+      $j–-;
+    }
+  $arr[$j+1] = $x;
+  }
+  return $arr;
 }
 echo ‘插入排序：’;
 echo implode(‘ ‘,InsertSort($arr)).”
 “;
+//归并排序函数
+//它的原理是假设初始序列含有 n 个元素，则可以看成是 n 个有序的子序列，每个子序列的长度为 1，然后两两归并
+//得到n/2个长度为2或1 的有序序列；再两两归并，······，如此重复
+//直至得到一个长度为 n 的有序序列为止，这种排序方法就成为 2 路归并排序
+
+//merge函数将指定的两个有序数组(arr1,arr2)合并并且排序
+//我们可以找到第三个数组,然后依次从两个数组的开始取数据哪个数据小就先取哪个的,然后删除掉刚刚取过的数据
+function al_merge($arrA,$arrB)
+{
+    $arrC = array();
+    while(count($arrA) && count($arrB)){
+        //这里不断的判断哪个值小,就将小的值给到arrC,但是到最后肯定要剩下几个值,
+        //不是剩下arrA里面的就是剩下arrB里面的而且这几个有序的值,肯定比arrC里面所有的值都大
+        $arrC[] = $arrA[0] < $arrB[0] ? array_shift($arrA) : array_shift($arrB);
+    }
+    return array_merge($arrC, $arrA, $arrB);
+}
+function al_merge_sort($arr){
+    $len = count($arr);
+    if($len <= 1) return $arr;
+    //递归结束条件,到达这步的时候,数组就只剩下一个元素了,也就是分离了数组
+    //分离数组元素
+    $mid = intval($len/2);//取数组中间
+    $left_arr = array_slice($arr, 0, $mid);//拆分数组0-mid这部分给左边left_arr
+    $right_arr = array_slice($arr, $mid);//拆分数组mid-末尾这部分给右边right_arr
+    $left_arr = $this->al_merge_sort($left_arr);//左边拆分完后开始递归合并往上走
+    $right_arr = $this->al_merge_sort($right_arr);//右边拆分完毕开始递归往上走
+    $arr = $this->al_merge($left_arr, $right_arr);//合并两个数组,继续递归
+    return $arr;
+}
+
 //—————————————
 // 常用查找算法
 //—————————————
