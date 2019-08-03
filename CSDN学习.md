@@ -9,7 +9,7 @@ function BubbleSort($arr){
     if($length<=1){ return $arr; } 
     for($i=0;$i<$length;$i++)
     { 
-      for($j=$length-1;$j>$i;$j–)
+      for($j=$length-1;$j>$i;$j–-)
       {
         if($arr[$j]<$arr[$j-1]){ 
           $tmp = $arr[$j]; 
@@ -123,11 +123,19 @@ function al_merge_sort($arr){
 //—————————————
 //二分查找
 function binary_search($arr,$low,$high,$key){
-while($low<=$high){ $mid = intval(($low+$high)/2); if($key == $arr[$mid]){ return $mid+1; }elseif($key<$arr[$mid]){ $high = $mid-1; }elseif($key>$arr[$mid]){
-$low = $mid+1;
-}
-}
-return -1;
+    while($low<=$high)
+    { 
+        $mid = intval(($low+$high)/2); 
+        if($key == $arr[$mid])
+        { 
+            return $mid+1; 
+        }elseif($key<$arr[$mid]){
+            $high = $mid-1; 
+        }elseif($key>$arr[$mid]){
+            $low = $mid+1;
+        }
+    }
+    return -1;
 }
 $key = 6;
 echo “二分查找{$key}的位置：”;
